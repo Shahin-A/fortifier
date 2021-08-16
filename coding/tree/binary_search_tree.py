@@ -18,7 +18,7 @@ class BinarySearchTree:
                 inorder.append(cur.val)
                 cur = cur.right
             else:
-                predecessor = cur.predecessor()
+                predecessor = cur.__predecessor()
                 if (not predecessor.right):
                     predecessor.right = cur
                     cur = cur.left
@@ -29,13 +29,17 @@ class BinarySearchTree:
         return inorder
 
     def preorder(self):
+        """
+        Morris preorder tree traversal
+        :return: a list of pre order elements within the BST.
+        """
         preorder, cur = [], self
         while(cur):
             if (not cur.left):
                 preorder.append(cur.val)
                 cur = cur.right
             else:
-                predecessor = cur.predecessor()
+                predecessor = cur.__predecessor()
                 if (not predecessor.right):
                     predecessor.right = cur
                     preorder.append(cur.val)
@@ -53,16 +57,43 @@ class BinarySearchTree:
         return inorder
 
     def predecessor(self):
-        predecessor = self.left
-        while(predecessor and predecessor.right and predecessor.right != self):
-            predecessor = predecessor.right
-        return predecessor
+        if (self.left):
+            return self.left.max()
+        cur, parent = self, self.parent
+        while(parent and parent.left == cur):
+            cur = parent
+            parent = parent.parent
+        return parent
 
     def successor(self):
-        successor = self.right
-        while(successor and successor.left and successor.left != self):
-            successor = successor.left
-        return successor
+        if (self.right):
+            return self.right.min()
+        cur, parent = self, self.parent
+        while(parent and parent.right == cur):
+            cur = parent
+            parent = parent.parent
+        return parent
+
+    def min(self):
+        cur = self
+        while (cur.left):
+            cur = cur.left
+        return cur
+
+    def max(self):
+        cur = self
+        while(cur.right):
+            cur = cur.right
+        return cur
+
+    def search(self, key):
+        cur = self
+        while(cur and cur.val != key):
+            if (cur.val > key):
+                cur = cur.left
+            else:
+                cur = cur.right
+        return cur
 
     def valid(self):
 
@@ -81,3 +112,15 @@ class BinarySearchTree:
             return valid, max_value, min_value
 
         return __valid(self)[0]
+
+    def __predecessor(self):
+        predecessor = self.left
+        while(predecessor and predecessor.right and predecessor.right != self):
+            predecessor = predecessor.right
+        return predecessor
+
+    def __successor(self):
+        successor = self.right
+        while(successor and successor.left and successor.left != self):
+            successor = successor.left
+        return successor
