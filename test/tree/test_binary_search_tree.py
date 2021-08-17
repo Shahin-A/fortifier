@@ -38,6 +38,20 @@ class TestUnboundedTree(TestCase):
         root = self.__get_sample_tree()
         self.assertEqual([2, 5, 5, 6, 7, 8], root.inorder_recursive())
 
+    def test_delete_single_node(self):
+        tree = BinarySearchTree(1)
+        self.assertIsNone(tree.delete(1))
+        self.assertEqual(tree, tree.delete(2))
+
+    def test_delete_multi_node(self):
+        root = self.__get_sample_tree()
+        root_deleted = root.delete(6)
+        self.assertEqual([7, 5, 2, 5, 8], root_deleted.preorder())
+
+        deleted = root.delete(5)
+        self.assertEqual([6, 5, 2, 7, 8], deleted.preorder())
+
+
     def test_invalid_trees(self):
         invalid_left_tree = BinarySearchTree(8,
                 left=BinarySearchTree(5, right=BinarySearchTree(9)),
