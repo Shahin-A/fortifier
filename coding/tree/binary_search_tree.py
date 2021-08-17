@@ -95,6 +95,41 @@ class BinarySearchTree:
                 cur = cur.right
         return cur
 
+    def add(self, key):
+        cur, next = None, self
+        while next:
+            cur = next
+            next = cur.left if key <= cur.val else cur.right
+        if key <= cur.val:
+            cur.left = BinarySearchTree(key, parent=cur)
+        else:
+            cur.right = BinarySearchTree(key, parent=cur)
+
+    def delete(self, key):
+        if key < self.val:
+            return BinarySearchTree(self.val, left=self.left.delete(key), right=self.right, parent=self) if self.left else self
+        elif key > self.val:
+            return BinarySearchTree(self.val, left=self.left, right=self.right.delete(key), parent=self) if self.right else self
+        else:
+            if not self.left:
+                return BinarySearchTree.__convert_parent(self.right, self)
+            elif not self.right:
+                return BinarySearchTree.__convert_parent(self.left, self)
+            else:
+                successor = self.right.min()
+                if successor == self.right:
+                    return BinarySearchTree(successor.val, left=self.left, right=successor.right, parent=self.parent)
+                else:
+                    right_child = BinarySearchTree.__convert_parent(self.right.delete(successor.val), self.parent)
+                    return BinarySearchTree(successor.val, left=self.left, right=right_child)
+
+    @classmethod
+    def __convert_parent(cls, root, parent):
+        if not root:
+            return None
+        return BinarySearchTree(root.val, left=root.left, right=root.right, parent=parent)
+
+
     def valid(self):
 
         def __valid(tree):
