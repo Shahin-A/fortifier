@@ -37,3 +37,21 @@ class TestRedBlackTree(TestCase):
         self.assertEqual(3, tree.root.right.val)
         self.assertEqual(Color.RED, tree.root.right.left.color)
         self.assertEqual(2, tree.root.right.left.val)
+
+    def test_delete(self):
+        tree = RedBlackTree()
+        tree.add(1)
+        tree.add(2)
+        tree.add(3)
+
+        tree.delete(tree.root)
+        self.assertEqual(Color.BLACK, tree.root.color)
+        self.assertEqual(3, tree.root.val)
+        self.assertEqual(Color.RED, tree.root.left.color)
+        self.assertEqual(1, tree.root.left.val)
+
+    def test_delete_empty(self):
+        tree = RedBlackTree()
+        tree.delete(tree.root)
+
+        self.assertEqual(NIL, tree.root)
