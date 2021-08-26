@@ -6,6 +6,21 @@ class BinarySearchTree:
         self.left = left
         self.right = right
 
+    def flatten(self):
+        stack = []
+        stack.append(self)
+        while stack:
+            node = stack.pop()
+            if node.right:
+                stack.append(node.right)
+            if node.left:
+                stack.append(node.left)
+
+            if stack:
+                node.right = stack[-1]
+
+            node.left = None
+
     def inorder(self):
         """
         Morris Inorder tree traversal.

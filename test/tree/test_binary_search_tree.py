@@ -4,6 +4,22 @@ from coding.tree.binary_search_tree import BinarySearchTree
 
 class TestUnboundedTree(TestCase):
 
+    def test_flatten(self):
+        tree = self.__get_sample_tree()
+        tree.flatten()
+        self.assertEqual(6, tree.val)
+        self.assertIsNone(tree.left)
+        self.assertEqual(5, tree.right.val)
+        self.assertIsNone(tree.right.left)
+        self.assertEqual(2, tree.right.right.val)
+        self.assertIsNone(tree.right.right.left)
+        self.assertEqual(5, tree.right.right.right.val)
+        self.assertIsNone(tree.right.right.right.left)
+        self.assertEqual(7, tree.right.right.right.right.val)
+        self.assertIsNone(tree.right.right.right.right.left)
+        self.assertEqual(8, tree.right.right.right.right.right.val)
+        self.assertIsNone(tree.right.right.right.right.right.left)
+
     def test_predecessor_single_node(self):
         tree = BinarySearchTree(6)
         self.assertIsNone(tree.predecessor())
